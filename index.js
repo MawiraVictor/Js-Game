@@ -8,7 +8,7 @@ c.fillRect(0, 0, canvas.width, canvas.height) //=> it takes 4 arguments
 
 //use use ObjectOrientedProgramming so that different objects can interact with each other
 
-const gravity = 0.2
+const gravity = 0.7
 class Sprite { //this is the brue print for the object
     constructor({position, velocity,}){  //constructor method which is bassically a funtion within a class
         //here we define the properties of the object => our object here is sprite
@@ -96,15 +96,15 @@ function animate(){
 
     // player movement
     if (keys.a.pressed && player.lastKey === 'a') { //check which key is a certain key is pressed and it was the last key then follow the key funtion
-        player.velocity.x = -1
+        player.velocity.x = -5 // speed of 5 pixels per frame
     }else if (keys.d.pressed && player.lastKey === 'd') {
-        player.velocity.x = 1
+        player.velocity.x = 5
     }
     //enemy movenent
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') { //check which key is a certain key is pressed and it was the last key then follow the key funtion
-        enemy.velocity.x = -1
+        enemy.velocity.x = -5
     }else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 1
+        enemy.velocity.x = 5
     }
 }
 animate()
@@ -121,7 +121,7 @@ window.addEventListener('keydown', (event) => { // monitor the key we press
             player.lastKey = 'a' 
         break
         case 'w':
-            player.velocity.y = -10 // jump at a velocity of 10
+            player.velocity.y = -20 // jump at a velocity of 10
             break
            case 'ArrowRight':
             keys.ArrowRight.pressed = true // moving the enemy along the right
@@ -132,7 +132,7 @@ window.addEventListener('keydown', (event) => { // monitor the key we press
             enemy.lastKey = 'ArrowLeft'
         break
         case 'ArrowUp':
-            enemy.velocity.y = -10 // jump at a velocity of 10
+            enemy.velocity.y = -20 // jump at a velocity of 5 pixels pre-frame
             
         break
     }
