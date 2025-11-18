@@ -136,30 +136,8 @@ function rectangularCollision({rectangle1, rectangle2}){
         rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
     )
 }
-function decreaseTimer() {
-    if (timer > 0) {
-        timerId = setTimeout(decreaseTimer, 1000)
-        timer--
-        document.querySelector('#timer').innerHTML = timer
-    }
 
-    if (timer === 0) {
-        // Handle game over when timer reaches 0
-        determineWinner()
-    }
-}
-function decreaseTimer() {
-    if (timer > 0) {
-        timerId = setTimeout(decreaseTimer, 1000)
-        timer--
-        document.querySelector('#timer').innerHTML = timer
-    }
 
-    if (timer === 0) {
-        // Handle game over when timer reaches 0
-        determineWinner()
-    }
-}
 let timer = 60
 let timerId
 
@@ -186,6 +164,7 @@ function determineWinner() {
         console.log('Enemy Wins!')
     }
 }
+decreaseTimer()
 
 
 function animate(){
