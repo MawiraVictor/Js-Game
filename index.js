@@ -28,7 +28,7 @@ class Sprite { //this is the brue print for the object
             height:50
         }
         this.color = color //color property so that object colors are indepedent
-        this.isAttacking //= false
+        this.isAttacking = false
         this.health = 100
     }
     draw(){ //draw method
