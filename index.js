@@ -8,6 +8,7 @@ c.fillRect(0, 0, canvas.width, canvas.height) //=> it takes 4 arguments
 
 //use use ObjectOrientedProgramming so that different objects can interact with each other
 
+
 const gravity = 0.7
 class Sprite { //this is the brue print for the object
     constructor({position, velocity, color = 'red', offset}){  //constructor method which is bassically a funtion within a class
@@ -27,7 +28,8 @@ class Sprite { //this is the brue print for the object
             height:50
         }
         this.color = color //color property so that object colors are indepedent
-        this.isAttacking = false
+        this.isAttacking //= false
+        this.health = 100
     }
     draw(){ //draw method
         c.fillStyle = this.color
@@ -134,6 +136,47 @@ function rectangularCollision({rectangle1, rectangle2}){
         rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
     )
 }
+function decreaseTimer() {
+    if (timer > 0) {
+        timerId = setTimeout(decreaseTimer, 1000)
+        timer--
+        document.querySelector('#timer').innerHTML = timer
+    }
+
+    if (timer === 0) {
+        // Handle game over when timer reaches 0
+        determineWinner()
+    }
+}
+function decreaseTimer() {
+    if (timer > 0) {
+        timerId = setTimeout(decreaseTimer, 1000)
+        timer--
+        document.querySelector('#timer').innerHTML = timer
+    }
+
+    if (timer === 0) {
+        // Handle game over when timer reaches 0
+        determineWinner()
+    }
+}
+let timer = 120
+let timerId
+
+// Add this function to handle the timer
+function decreaseTimer() {
+    if (timer > 0) {
+        timerId = setTimeout(decreaseTimer, 1000)
+        timer--
+        document.querySelector('#timer').innerHTML = timer
+    }
+
+    if (timer === 0) {
+        // Handle game over when timer reaches 0
+        determineWinner()
+    }
+}
+
 function animate(){
     window.requestAnimationFrame(animate)// what funtion do i want to loop over agaiin
     c.fillStyle = 'black'
@@ -165,7 +208,8 @@ function animate(){
     )
           { 
             player.isAttacking = false //single press on attack key causes only a single attack 
-        console.log ('go')
+            enemy.health -= 10
+        document.querySelector('#enemyHealth').style.width = enemy.health + '%' // handle attack ui by shrinking the helth by 20 % => enemy
     }
     if( rectangularCollision({
         rectangle1: enemy,
@@ -175,7 +219,8 @@ function animate(){
     )
           { 
             enemy.isAttacking = false //single press on attack key causes only a single attack 
-        console.log ('enemy attack success')
+            player.health +=10
+            document.querySelector('#playerHealth').style.width = player.health + '%' // handle attack ui by shrinking the helth by 20 % => player
     }
 }
 animate()
