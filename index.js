@@ -160,10 +160,10 @@ function decreaseTimer() {
         determineWinner()
     }
 }
-let timer = 120
+let timer = 60
 let timerId
 
-// Add this function to handle the timer
+// Added this function to handle the timer
 function decreaseTimer() {
     if (timer > 0) {
         timerId = setTimeout(decreaseTimer, 1000)
@@ -176,6 +176,17 @@ function decreaseTimer() {
         determineWinner()
     }
 }
+// Added this function to determine winner
+function determineWinner() {
+    if (player.health === enemy.health) {
+        console.log('Tie!')
+    } else if (player.health > enemy.health) {
+        console.log('Player Wins!')
+    } else if (player.health < enemy.health) {
+        console.log('Enemy Wins!')
+    }
+}
+
 
 function animate(){
     window.requestAnimationFrame(animate)// what funtion do i want to loop over agaiin
