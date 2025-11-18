@@ -10,17 +10,35 @@ c.fillRect(0, 0, canvas.width, canvas.height) //=> it takes 4 arguments
 
 const gravity = 0.7
 class Sprite { //this is the brue print for the object
-    constructor({position, velocity,}){  //constructor method which is bassically a funtion within a class
+    constructor({position, velocity, color = 'red'}){  //constructor method which is bassically a funtion within a class
         //here we define the properties of the object => our object here is sprite
         this.position = position //in case they have a position indepedent from one another
         this.velocity = velocity //new propery
+        this.width = 50
         this.height = 150
         this.lastKey
+        this.attackBox = { // added an attack object => has three properties 1. position 2. width 3. Height 
+            position:this.position,
+            width:100,
+            height:50
+        }
+        this.color = color //color property so that object colors are indepedent
+        this.isAttacking = false
     }
     draw(){ //draw method
-        c.fillStyle = 'red' 
-        c.fillRect(this.position.x, this.position.y, 50, this.height) //referencing x and y
+        c.fillStyle = this.color
+        c.fillRect(this.position.x, this.position.y, this.width, this.height) //referencing x and y
+           // lets draw an attack-box
+        c.fillStyle = 'green'
+        c.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y, 
+        this.attackBox.width, 
+        this.attackBox.height 
+        )
     }
+        
+     
     update(){ // update method 
         this.draw()
         
@@ -33,7 +51,14 @@ class Sprite { //this is the brue print for the object
             this.velocity.y += gravity // if the player is at a height above the base-line we add gravity => downward movement
         }
     }
+    attack(){
+        this.isAttacking = true
+        setTimeout(() =>{
+            this.isAttacking = false
+        }, 100)
+    }
 }
+
     // create a new player and enemy
 
 const player = new Sprite({
@@ -55,7 +80,8 @@ const enemy = new Sprite({
     velocity: {
         x: 0,
         y: 10
-    }
+    },
+    color: 'blue'
 })
 console.log(player)
 console.log(enemy)
@@ -106,6 +132,16 @@ function animate(){
     }else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
         enemy.velocity.x = 5
     }
+    // detect collission
+    if(player.attackBox.position.x + player.attackBox.width >=enemy.position.x && 
+        player.attackBox.position.x <= enemy.position.x + enemy.width &&
+        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
+        player.attackBox.position.y <= enemy.position.y + enemy.height &&
+        player.isAttacking
+    )
+          {
+        console.log ('go')
+    }
 }
 animate()
 
@@ -127,6 +163,9 @@ window.addEventListener('keydown', (event) => { // monitor the key we press
             keys.ArrowRight.pressed = true // moving the enemy along the right
             enemy.lastKey = 'ArrowRight'
         break
+        case ' ':
+            player.attack()
+            break
         case 'ArrowLeft':
             keys.ArrowLeft.pressed = true // moving the enemy along the left
             enemy.lastKey = 'ArrowLeft'
