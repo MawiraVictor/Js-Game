@@ -10,7 +10,7 @@ c.fillRect(0, 0, canvas.width, canvas.height) //=> it takes 4 arguments
 
 const gravity = 0.7
 class Sprite { //this is the brue print for the object
-    constructor({position, velocity, color = 'red'}){  //constructor method which is bassically a funtion within a class
+    constructor({position, velocity, color = 'red', offset}){  //constructor method which is bassically a funtion within a class
         //here we define the properties of the object => our object here is sprite
         this.position = position //in case they have a position indepedent from one another
         this.velocity = velocity //new propery
@@ -18,7 +18,11 @@ class Sprite { //this is the brue print for the object
         this.height = 150
         this.lastKey
         this.attackBox = { // added an attack object => has three properties 1. position 2. width 3. Height 
-            position:this.position,
+            position: { //ensure player and enemy possitions are indepedent
+                x:this.position.x,
+                y:this.position.y
+            },
+            offset,
             width:100,
             height:50
         }
@@ -29,7 +33,7 @@ class Sprite { //this is the brue print for the object
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height) //referencing x and y
            // lets draw an attack-box
-           if(this.isAttacking) { //only when attacking show the weapon
+         if(this.isAttacking) { //only when attacking show the weapon
         c.fillStyle = 'green'
         c.fillRect(
         this.attackBox.position.x,
@@ -43,7 +47,9 @@ class Sprite { //this is the brue print for the object
      
     update(){ // update method 
         this.draw()
-        
+        this.attackBox.position.x = this.position.x - this.attackBox.offset.x
+        this.attackBox.position.y = this.position.y
+
         this.position.x += this.velocity.x // define movement along the y-axis
         this.position.y += this.velocity.y // define how the player moves on the X- axis
         
@@ -71,6 +77,10 @@ const player = new Sprite({
     velocity: {
         x: 0,
         y: 0
+    },
+    offset: { //ofset argument
+        x:0,
+        y:0
     }
 })
 
@@ -83,7 +93,11 @@ const enemy = new Sprite({
         x: 0,
         y: 10
     },
-    color: 'blue'
+    color: 'blue',
+    offset: {
+        x:50,
+        y:0
+    }
 })
 console.log(player)
 console.log(enemy)
@@ -112,6 +126,14 @@ const keys = {
 }
 let lastKey // monitor  which key was pressed last then let the key be the one that is functional
 
+function rectangularCollision({rectangle1, rectangle2}){
+    return (
+        rectangle1.attackBox.position.x + rectangle1.attackBox.width >=rectangle2.position.x && 
+        rectangle1.attackBox.position.x <= rectangle2.position.x + rectangle2.width &&
+        rectangle1.attackBox.position.y + rectangle1.attackBox.height >= rectangle2.position.y &&
+        rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height
+    )
+}
 function animate(){
     window.requestAnimationFrame(animate)// what funtion do i want to loop over agaiin
     c.fillStyle = 'black'
@@ -135,15 +157,25 @@ function animate(){
         enemy.velocity.x = 5
     }
     // detect collission
-    if(player.attackBox.position.x + player.attackBox.width >=enemy.position.x && 
-        player.attackBox.position.x <= enemy.position.x + enemy.width &&
-        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
-        player.attackBox.position.y <= enemy.position.y + enemy.height &&
+    if( rectangularCollision({
+        rectangle1: player,
+        rectangle2: enemy
+    })&&
         player.isAttacking
     )
           { 
             player.isAttacking = false //single press on attack key causes only a single attack 
         console.log ('go')
+    }
+    if( rectangularCollision({
+        rectangle1: enemy,
+        rectangle2: player
+    })&&
+        enemy.isAttacking
+    )
+          { 
+            enemy.isAttacking = false //single press on attack key causes only a single attack 
+        console.log ('enemy attack success')
     }
 }
 animate()
@@ -177,9 +209,10 @@ window.addEventListener('keydown', (event) => { // monitor the key we press
             enemy.velocity.y = -20 // jump at a velocity of 5 pixels pre-frame
             
         break
+        case 'ArrowDown': //enemy attacking key
+        enemy.isAttacking = true
+        break
     }
-    
-    console.log(event.key);
 })
 
 window.addEventListener('keyup', (event) => { // monitor the key we release the key then the velocity is set to zero 0
@@ -206,6 +239,4 @@ window.addEventListener('keyup', (event) => { // monitor the key we release the 
             keys.ArrowUp.pressed = false
         break
     }
-    
-    console.log(event.key);
 })
