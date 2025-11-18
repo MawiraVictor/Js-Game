@@ -1,7 +1,13 @@
-
+<head>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+    </style>
+</head>
 <body>
     <!-- red container div -->
-    <div style="position: relative;">
+    <div style="position: relative; display: inline-block">
         <div style="position: absolute; display: flex; width: 100%; align-items:center;">
             <!-- player health -->
             <div style="background-color: yellow; height: 30px; width: 100%"></div> 
@@ -11,11 +17,12 @@
             width: 100px; 
             height: 100px;
             flex-shrink: 0;
+            padding: 20px
             "></div> 
             <!-- enemy health -->
              <div style="background-color: yellow; height: 30px; width: 100%"></div> 
         </div>
-        <canvas></canvas>
+        <canvas width="1024" height="576"></canvas>
     </div>
     
     <script src="index.js"></script>
