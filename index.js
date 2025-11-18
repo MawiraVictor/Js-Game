@@ -164,8 +164,11 @@ function determineWinner() {
         console.log('Enemy Wins!')
     }
 }
+// added a game over check
 decreaseTimer()
-
+if (enemy.health <= 0 || player.health <= 0) {
+    determineWinner()
+}
 
 function animate(){
     window.requestAnimationFrame(animate)// what funtion do i want to loop over agaiin
@@ -209,7 +212,7 @@ function animate(){
     )
           { 
             enemy.isAttacking = false //single press on attack key causes only a single attack 
-            player.health +=10
+            player.health -=10
             document.querySelector('#playerHealth').style.width = player.health + '%' // handle attack ui by shrinking the helth by 20 % => player
     }
 }
