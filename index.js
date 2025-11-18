@@ -29,6 +29,7 @@ class Sprite { //this is the brue print for the object
         c.fillStyle = this.color
         c.fillRect(this.position.x, this.position.y, this.width, this.height) //referencing x and y
            // lets draw an attack-box
+           if(this.isAttacking) { //only when attacking show the weapon
         c.fillStyle = 'green'
         c.fillRect(
         this.attackBox.position.x,
@@ -36,6 +37,7 @@ class Sprite { //this is the brue print for the object
         this.attackBox.width, 
         this.attackBox.height 
         )
+    }
     }
         
      
@@ -139,7 +141,8 @@ function animate(){
         player.attackBox.position.y <= enemy.position.y + enemy.height &&
         player.isAttacking
     )
-          {
+          { 
+            player.isAttacking = false //single press on attack key causes only a single attack 
         console.log ('go')
     }
 }
